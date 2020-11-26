@@ -27,24 +27,19 @@ function Snake() {
     this.x += this.xSpeed;
     this.y += this.ySpeed;
 
+    // Allow snake to travel accross map
     if (this.x > canvas.width) {
       this.x = 0;
-    }
-
-    if (this.y > canvas.height) {
+    } else if (this.y > canvas.height) {
       this.y = 0;
-    }
-
-    if (this.x < 0) {
+    } else if (this.x < 0) {
       this.x = canvas.width;
-    }
-
-    if (this.y < 0) {
+    } else if (this.y < 0) {
       this.y = canvas.height;
     }
   }
 
-
+  // Change Direction of Snake when WASD key is pressed
   this.changeDirection = function(direction) {
     //console.log(direction);
     switch(direction) {
@@ -67,6 +62,7 @@ function Snake() {
     }
   }
 
+  // Checks if snake has eaten food and generate new one
   this.eat = function(food) {
     if (this.x === food.x &&
       this.y === food.y) {
@@ -76,6 +72,7 @@ function Snake() {
     return false;
   }
 
+  // Checks if snake has eaten apple and generate new one
   this.eatApple = function(apple) {
     if (this.x === apple.x &&
       this.y === apple.y) {
@@ -85,6 +82,7 @@ function Snake() {
     return false;
   }
 
+  // Checks if Snake has run into its own body
   this.checkCollision = function() {
     for (var i=0; i<this.body.length; i++) {
       if (this.x === this.body[i].x &&
