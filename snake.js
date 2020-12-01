@@ -7,13 +7,26 @@ function Snake() {
   this.body = [];
 
   this.draw = function() {
-    ctx.fillStyle = "#FFFFFF";
+    var headDirection = 0, tailDirection = 0;
+    
+    if (this.ySpeed < 0) headDirection = 0;
+    else if (this.ySpeed > 0) headDirection = 1;
+    else if (this.xSpeed < 0) headDirection = 2;
+    else headDirection = 3;
+    
+    if (this.total < 2) tailDirection = headDirection;
+    else if (this.body[0].x == this.body[1].x) tailDirection = this.body[0].y > this.body[1].y ? 0 : 1;
+    else tailDirection = this.body[0].x > this.body[1].x ? 2 : 3;
+    
+    if (this.total == 0) draw_snake(this.x, this.y, this.x, this.y, headDirection, tailDirection);
+    else draw_snake(this.x, this.y, this.body[0].x, this.body[0].y, headDirection, tailDirection);
+    
     for (let i=0; i<this.body.length; i++) {
       ctx.fillRect(this.body[i].x,
         this.body[i].y, scale, scale);
     }
-
-    ctx.fillRect(this.x, this.y, scale, scale);
+    
+    score_board(this.total);
   }
 
   this.update = function() {
@@ -44,18 +57,22 @@ function Snake() {
     //console.log(direction);
     switch(direction) {
       case 'W':
+        if (this.ySpeed != 0) break;
         this.xSpeed = 0;
         this.ySpeed = -scale;
         break;
       case 'S':
+      	if (this.ySpeed != 0) break;
         this.xSpeed = 0;
         this.ySpeed = scale;
         break;
       case 'A':
+      	if (this.xSpeed != 0) break;
         this.xSpeed = -scale;
         this.ySpeed = 0;
         break;
       case 'D':
+      	if (this.xSpeed != 0) break;
         this.xSpeed = scale;
         this.ySpeed = 0;
         break;
@@ -76,6 +93,7 @@ function Snake() {
   this.eatApple = function(apple) {
     if (this.x === apple.x &&
       this.y === apple.y) {
+      if (this.total == 0) lose();
       this.total--;
       return true;
     }
@@ -87,8 +105,9 @@ function Snake() {
     for (var i=0; i<this.body.length; i++) {
       if (this.x === this.body[i].x &&
         this.y === this.body[i].y) {
-        this.total = 0;
-        this.body = [];
+        /*this.total = 0;
+        this.body = [];*/
+        lose();
       }
     }
   }
