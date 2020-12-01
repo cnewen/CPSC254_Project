@@ -12,7 +12,6 @@ function Food() {
 
   // Draw RED FOOD onto screen
   this.draw = function() {
-    ctx.fillStyle = "#FF3333";
-    ctx.fillRect(this.x, this.y, scale, scale)
+    draw_apple(this.x, this.y, "#FF3333", ctx);
   }
 }

@@ -12,7 +12,6 @@ function Apple() {
 
   // Draw YELLOW APPLE onto screen
   this.draw = function() {
-    ctx.fillStyle = "#FFFF33";
-    ctx.fillRect(this.x, this.y, scale, scale)
+    draw_apple(this.x, this.y, "#FFFF33", ctx);
   }
 }
