@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Options Screen</title>
+  </head>
+  <body style="text-align: center; background-color: powderblue;">
+    <b>Options</b><br><br>
+    <form action="index.html" method="get">
+        <label>Player Color:</label><br>
+        <input type="radio" id='green' name="color" value="green" checked />
+        <label>Green</label>
+        <input type="radio" id='blue' name="color" value="blue" />
+        <label>Blue</label>
+        <input type="radio" id='orange' name="color" value="orange" />
+        <label>Orange</label>
+        <input type="radio" id='brown' name="color" value="brown" />
+        <label>Brown</label>
+        <input type="radio" id='yellow' name="color" value="yellow" />
+        <label>Yellow</label>
+        <input type="radio" id='red' name="color" value="red" />
+        <label>Red</label>
+        <input type="radio" id='white' name="color" value="white" />
+        <label>White</label><br><br>
+      </div>
+      <div>
+      	<label>Enemy:</label><br>
+        <input type="radio" name="enemy" id='Alone' value=false checked />
+        <label>Play Alone</label> 
+        <input type="radio" name="enemy" id='Enemy' value=true />
+        <label>Play With Enemy</label><br><br>
+      </div>
+      <button type="submit">Save Changes</button>
+    </form>
+  <script type="text/javascript" src="form_handler.js"></script>
+  <script>
+  save_options();
+  </script>
+  </body>
+</html>

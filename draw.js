@@ -3,7 +3,8 @@ const ctx = canvas.getContext("2d");
 const scale = 20;
 const rows = canvas.height / scale;
 const cols = canvas.width / scale;
-var snake;
+var snake, enemy;
+with_enemy = true;
 
 (function setup() {
   snake = new Snake();
@@ -11,6 +12,7 @@ var snake;
   apple = new Apple();
   food.pickLocation();
   apple.pickLocation();
+  enemy = new Enemy();
 
   window.setInterval(() => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -18,6 +20,7 @@ var snake;
     apple.draw();
     snake.update();
     snake.draw();
+    if (with_enemy) updateEnemy();
 
     // generate food at random location
     if (snake.eat(food)) {
@@ -29,10 +32,28 @@ var snake;
       apple.pickLocation();
     }
 
-    snake.checkCollision();
+    snake.checkCollision(enemy);
   }, 250);
 }());
 
+function updateEnemy() {
+	if (alone()) {
+		with_enemy = false;
+		delete enemy;
+		return;
+	}
+	enemy.changeDirection(enemy.findApple(food.x, food.y));
+    	enemy.update();
+    	enemy.draw();
+    	enemy.checkCollision(snake);
+    	
+    	if (enemy.eat(food)) {
+      		food.pickLocation();
+    	}
+   	if(enemy.eatApple(apple)) {
+     		apple.pickLocation();
+    	}
+}
 
 // Listen for Button Pressed WASD
 window.addEventListener('keydown', ((evt) => {
