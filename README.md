@@ -1,5 +1,6 @@
 # CPSC 254 Snake Game Project
-## Programmed in HTML/Javascript
+## Languages used: HTML, Javascript
+## Tools used: Git
 
 The Snake Game is a fun to play game on your browser. The game features a customizable snake, and a PvE option.
 Race towards the food and avoid the bad ones. Collect as much as you can and earn high scores to compete against your friends.
