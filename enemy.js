@@ -1,6 +1,8 @@
-function Snake() {
-  this.x = 0;
-  this.y = 0;
+function Enemy() {
+  this.x = (Math.floor(Math.random() *
+      cols - 1) + 1) * scale;
+  this.y = (Math.floor(Math.random() *
+    rows - 1) + 1) * scale;
   this.xSpeed = scale * 1;
   this.ySpeed = 0;
   this.total = 0;
@@ -18,15 +20,13 @@ function Snake() {
     else if (this.body[0].x == this.body[1].x) tailDirection = this.body[0].y > this.body[1].y ? 0 : 1;
     else tailDirection = this.body[0].x > this.body[1].x ? 2 : 3;
     
-    if (this.total == 0) draw_snake(this.x, this.y, this.x, this.y, headDirection, tailDirection, get_color());
-    else draw_snake(this.x, this.y, this.body[0].x, this.body[0].y, headDirection, tailDirection, get_color());
+    if (this.total == 0) draw_snake(this.x, this.y, this.x, this.y, headDirection, tailDirection, 'red');
+    else draw_snake(this.x, this.y, this.body[0].x, this.body[0].y, headDirection, tailDirection, 'red');
     
     for (let i=0; i<this.body.length; i++) {
       ctx.fillRect(this.body[i].x,
         this.body[i].y, scale, scale);
     }
-    
-    score_board(this.total);
   }
 
   this.update = function() {
@@ -93,7 +93,7 @@ function Snake() {
   this.eatApple = function(apple) {
     if (this.x === apple.x &&
       this.y === apple.y) {
-      if (this.total == 0) lose();
+      if (this.total == 0) return true;
       this.total--;
       return true;
     }
@@ -101,21 +101,30 @@ function Snake() {
   }
 
   // Checks if Snake has run into its own body
-  this.checkCollision = function(enemy) {
-    if (this.x === enemy.x && this.y === enemy.y) lose();
-    
+  this.checkCollision = function(player) {
     for (var i=0; i<this.body.length; i++) {
       if (this.x === this.body[i].x &&
         this.y === this.body[i].y) {
-        lose();
+        this.x = -20;
+        this.y = -20;
+        with_enemy = false;
       }
     }
     
-    for (var i=0; i<enemy.body.length; i++) {
-      if (this.x === enemy.body[i].x &&
-        this.y === enemy.body[i].y) {
-        lose();
+    for (var i=0; i<player.body.length; i++) {
+      if (this.x === player.body[i].x &&
+        this.y === player.body[i].y) {
+        this.x = -20;
+        this.y = -20;
+        with_enemy = false;
       }
     }
+  }
+  //Checks location vs apple and returns WASD
+  this.findApple = function(appleX, appleY) {
+  	if (appleY < this.y) return (this.ySpeed > 0 ? (apple.X > this.x ? 'D' : 'A') : 'W');
+  	if (appleX < this.x) return (this.xSpeed > 0 ? 'S' : 'A');
+  	if (appleX > this.x) return (this.xSpeed < 0 ? 'S' : 'D');
+  	if (appleY > this.y) return (this.ySpeed < 0 ? 'A' : 'S');
   }
 }

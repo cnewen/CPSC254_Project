@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Snake Game</title>
+    <title>Loss Screen</title>
   </head>
   <body style="background-color: powderblue">
     <div style="text-align: center">
@@ -10,12 +10,20 @@
         height="800"
         width="800"
         style="background-color: black"
-        style="border: 10px solid #FF0000"
-        style="z-index:1"></canvas>
+        style="border: 10px solid #FF0000"></canvas>
       </canvas>
     </div>
-    
-  <script type="text/javascript" src="pixel_art.js"></script>
-  <script> loss_screen();</script>
+    <form action="start.html" id='form' method="get">
+      <input type="text" id="color" name="color" value='green' style="visibility: hidden">
+      <input type="text" id="enemy" name="enemy" value=false style="visibility: hidden">
+      <button type="submit" id="submit" style="visibility: hidden"></button>
+    </form>
   </body>
+  <script type="text/javascript" src="pixel_art.js"></script>
+  <script type="text/javascript" src="form_handler.js"></script>
+  <script> 
+  loss_screen();
+  parse_options();
+  get_score();
+  </script>
 </html>

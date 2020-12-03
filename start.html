@@ -4,8 +4,14 @@
     <title>Snake Game</title>
   </head>
   <body style="background-color: powderblue">
-    <p id="score" 
-    style="text-align: center; font-size:19px;">Score: 0</p>
+    <form action="start.html" id='form' method="get">
+      <input type="text" id="color" name="color" value='green' style="visibility: hidden;">
+      <input type="text" id="enemy" name="enemy" value=false style="visibility: hidden;">
+      <input type="text" id="score" name="score" style="visibility: hidden;">
+      <p id="score_board" style="text-align: center;">Score: 0</p>
+      <button type="submit" id="submit" style="visibility: hidden;"></button>
+    </form>
+    
     <div style="text-align: center">
       <canvas
         class="canvas"
@@ -15,10 +21,16 @@
         style="border: 10px solid #FF0000">
       </canvas>
     </div>
+    
   </body>
   <script type="text/javascript" src="fruit.js"></script>
   <script type="text/javascript" src="snake.js"></script>
+  <script type="text/javascript" src="enemy.js"></script>
   <script type="text/javascript" src="apple.js"></script>
   <script type="text/javascript" src="draw.js"></script>
   <script type="text/javascript" src="pixel_art.js"></script>
+  <script type="text/javascript" src="form_handler.js"></script>
+  <script>
+  parse_options();
+  </script>
 </html>

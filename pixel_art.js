@@ -40,6 +40,7 @@ function shine(x1, y1, ctx) {
 	var white = [[5, 8], [4, 8], [4, 9], [3, 9], [3, 10], [3, 11]];
 	fillPixels(white, x1, y1, ctx);
 }
+//Draw all layers of apple with fill color
 function draw_apple(x1, y1, fill, ctx) {
 	x1 -= 5;
 	y1 -= 10;
@@ -49,12 +50,12 @@ function draw_apple(x1, y1, fill, ctx) {
 	shine(x1, y1, ctx);
 	outline(x1, y1, ctx);
 }
-////////////////Snake Pixel Art////////////////
+////////////////In Game Snake Parts////////////////
 var radius = scale / 2;
 var up = false, down = false, left = false, right = false;
-function head(x, y) {
+function head(x, y, color) {
 	ctx.beginPath();
-	ctx.fillStyle = 'green';
+	ctx.fillStyle = color;
 	
 	ctx.arc(x + radius, y + radius, Math.sqrt(2) * radius, radians(0), 
 	radians(360), true)
@@ -73,9 +74,9 @@ function eyes(x, y) {
 	else ctx.fillRect(b, c, radius / 3, radius / 3);
 }
 
-function tail(x, y, tailDir) {
+function tail(x, y, tailDir, color) {
 	ctx.beginPath();
-	ctx.fillStyle = 'green';
+	ctx.fillStyle = color;
 	
 	if (tailDir == 0) ctx.arc(x + radius, y + scale, radius, radians(180), 
 	radians(0), true);
@@ -87,62 +88,44 @@ function tail(x, y, tailDir) {
 	
 	ctx.fill();
 }
-
-function draw_snake(x1, y1, x2, y2, headDir, tailDir) {
+function draw_snake(x1, y1, x2, y2, headDir, tailDir, color) {
 	up = (headDir == 0);
 	down = (headDir == 1);
 	left = (headDir == 2);
 	right = (headDir == 3);
 	
-	head(x1, y1);
+	head(x1, y1, color);
 	eyes(x1, y1);
-	ctx.fillStyle = 'green';
-	tail(x2, y2, tailDir);
+	tail(x2, y2, tailDir, color);
 }
 ////////////////Score Board////////////////
 function score_board(length) { 
-	var score = document.getElementById('score');
+	var score = document.getElementById('score_board');
 	score.innerHTML = 'Score: ' + length;
+	document.getElementById('score').value = length;
 }
 ////////////////Loss Screen////////////////
+//Submit form to lose screen
 function lose() {
-	window.location.href = './lose.html';
+	document.getElementById('form').action = './lose.html';
+	document.getElementById('submit').click();
 }
 function loss_screen() {
 	var canvas = document.querySelector('canvas');
 	var ctx = canvas.getContext('2d');
+	var score = get_score();
 	
 	ctx.fillStyle = 'red';
 	ctx.font = '50px Arial';
-	ctx.fillText('You Lose', 300, 325);
+	ctx.fillText('You Lose', 300, 275);
+	ctx.fillText('Your Score: ' + score, 262.5, 340);
 	
-	button(ctx, 'black', 'white', 'Retry?');
-	
-	start(canvas);
+	button(canvas, 'black', 'white', 'Retry?', 400, 400, './start.html');
+	button(canvas, 'black', 'white', 'Main Menu', 400, 500, './index.html');
 }
-function button(ctx, background, color, text) {
-	ctx.fillStyle = color;
-	ctx.fillRect(320, 400, 175, 50);
-	
-	ctx.fillStyle = background;
-	ctx.fillRect(305, 385, 30, 30);
-	ctx.fillRect(480, 435, 30, 30);
-	ctx.fillRect(480, 385, 30, 30);
-	ctx.fillRect(305, 435, 30, 30);
-	
-	ctx.beginPath();
-	ctx.fillStyle = color;
-	ctx.arc(335, 415, 15, 0, radians(360), true);
-	ctx.arc(480, 435, 15, 0, radians(360), true);
-	ctx.arc(480, 415, 15, 0, radians(360), true);
-	ctx.arc(335, 435, 15, 0, radians(360), true);
-	ctx.fill();
-	
-	ctx.font = '40px Arial';
-	ctx.fillStyle = background;
-	ctx.fillText(text, 350, 435);
-}
+
 ////////////////Start Screen////////////////
+//Setup Start Screen
 function start_screen() {
 	var canvas = document.querySelector('canvas');
 	var ctx = canvas.getContext('2d');
@@ -151,24 +134,28 @@ function start_screen() {
 	ctx.font = '50px Arial';
 	ctx.fillText('Snake Game', 275, 325);
 	
-	button(ctx, 'powderblue', 'black', 'Start?');
+	button(canvas, 'powderblue', 'black', 'Start?', 400, 400, './start.html');
+	button(canvas, 'powderblue', 'black', 'Options', 400, 500, './options.html');
 	
 	draw_pixel_snake(ctx, 275, 25, 10);
 	draw_apple(100, 100, 'red', ctx);
 	draw_apple(600, 100, 'yellow', ctx);
-	start(canvas);
 }
-function start(canvas) {
+//Handle button clicks and submit form to correct html file
+function start(canvas, x, y, size, href) {
 	canvas.addEventListener('click', (e) => {
 		const mousePos = {
 			x: e.clientX - canvas.offsetLeft,
 			y: e.clientY - canvas.offsetTop
 		};
-		if (mousePos.x > 320 && mousePos.x < 495 && mousePos.y > 400 
-		&& mousePos.y < 450)
-		window.location.href = './start.html';
+		if (mousePos.x > (x - 10 * size - 25) && mousePos.x < (x + 11 * size + 25) 
+		&& mousePos.y > y && mousePos.y < y + 50) {
+		document.getElementById('form').action = href;
+		document.getElementById('submit').click();
+		}
 	});
 }
+////////////////Start Screen Snake Pixel Art////////////////
 function draw_pixel_snake(ctx, x, y, size) {
 	red_layer(ctx, x, y, size);
 	green_layer(ctx, x, y, size);
@@ -197,7 +184,7 @@ function stomach_layer(ctx, x, y, size) {
 	ctx.fillRect(x + 11 * size, y + 19 * size, 3 * size, size);
 	ctx.fillRect(x + 11 * size, y + 21 * size, 2 * size, size);
 	var layer = [[21, 22], [22, 23]];
-	fillPixelsContext(ctx, layer, x, y);
+	fillPixels(layer, x, y, ctx);
 	
 	ctx.fillStyle = '#95B90B';
 	ctx.fillRect(x + 11 * size, y + 16 * size, 4 * size, size);
@@ -207,7 +194,7 @@ function stomach_layer(ctx, x, y, size) {
 	ctx.fillRect(x + 9 * size, y + 4 * size, 4 * size, 7 * size);
 	ctx.fillRect(x + 11 * size, y + size, 3 * size, 3 * size);
 	layer = [[14, 21], [15, 20], [14, 23]];
-	fillPixelsContext(ctx, layer, x, y);
+	fillPixels(layer, x, y, ctx);
 }
 function red_layer(ctx, x, y, size) {
 	ctx.fillStyle = 'red';
@@ -238,7 +225,7 @@ function outline_layer(ctx, x, y, size) {
 		[10,19], [10,18], [10,17], [10,16], [11,15], [11,14], 
 		[12,14], [11,13], [11,12], [12,12], [13,12], [14,12], 
 		[15,12], [16,12], [17,11]];
-	fillPixelsContext(ctx, outline, x, y);
+	fillPixels(outline, x, y, ctx);
 }
 function eyes_layer(ctx, x, y, size) {
 	ctx.fillStyle = 'black';
@@ -251,8 +238,8 @@ function eyes_layer(ctx, x, y, size) {
 		[12,9], [13,8], [14,7], [14,6], [14,5], [13,7],
 		[13,6], [13,5], [12,8], [12,7], [12,6], [12,5],
 		[12,4], [13,4], [13,3], [13,2], [14,1]];
-	fillPixelsContext(ctx, right, x, y);
-	fillPixelsContext(ctx, left, x, y);
+	fillPixels(right, x, y, ctx);
+	fillPixels(left, x, y, ctx);
 }
 ////////////////Other Functions////////////////
 //draw pixels from array of points
@@ -263,14 +250,26 @@ function fillPixels(layer, x1, y1, ctx) {
 		ctx.fillRect(a, b, multiplier, multiplier);
 	}
 }
-function fillPixelsContext(ctx, layer, x1, y1) {
-	for (i = 0; i < layer.length; i++) {
-		var a = x1 + layer[i][0] * multiplier;
-		var b = y1 + layer[i][1] * multiplier;
-		ctx.fillRect(a, b, multiplier, multiplier);
-	}
-}
 //Takes Degrees and Returns Radians
 function radians(deg) {
 	return deg * Math.PI / 180;
+}
+//Draws a button on a canvas
+function button(canvas, background, color, text, x, y, href) {
+	var ctx = canvas.getContext('2d');
+	var size = text.length;
+	ctx.fillStyle = color;
+	ctx.fillRect(x - 10 * size, y, 21 * size, 50);
+
+	ctx.beginPath();
+	ctx.fillStyle = color;
+	ctx.arc(x - 10 * size, y + 25, 25, 0, radians(360), true);
+	ctx.arc(x + 11 * size, y + 25, 25, 0, radians(360), true);
+	ctx.fill();
+	
+	ctx.font = '40px Arial';
+	ctx.fillStyle = background;
+	ctx.fillText(text, x - 18 * size / 2, y + 35);
+	
+	start(canvas, x, y, size, href);
 }
