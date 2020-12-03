@@ -10,7 +10,8 @@ Race towards the food and avoid the bad ones. Collect as much as you can and ear
 * Hunter Blachly
 
 ### How To Run:
-Open index.html and use 'WASD' for controls
+1) Open start.html and press 'START'
+2) Use 'WASD' for controls
 
 ### Options:
 Select your snake color from Green, Blue, Orange, etc.
