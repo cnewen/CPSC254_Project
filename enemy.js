@@ -1,3 +1,9 @@
+/**
+  Team Members: Hunter Blachly, Calvin Nguyen
+  CPSC 254 -- Snake Game Project
+  Enemy Snake Object
+*/
+
 function Enemy() {
   this.x = (Math.floor(Math.random() *
       cols - 1) + 1) * scale;
@@ -8,27 +14,29 @@ function Enemy() {
   this.total = 0;
   this.body = [];
 
+  // Draws body of snake onto screen and keep track of score
   this.draw = function() {
     var headDirection = 0, tailDirection = 0;
-    
+
     if (this.ySpeed < 0) headDirection = 0;
     else if (this.ySpeed > 0) headDirection = 1;
     else if (this.xSpeed < 0) headDirection = 2;
     else headDirection = 3;
-    
+
     if (this.total < 2) tailDirection = headDirection;
     else if (this.body[0].x == this.body[1].x) tailDirection = this.body[0].y > this.body[1].y ? 0 : 1;
     else tailDirection = this.body[0].x > this.body[1].x ? 2 : 3;
-    
+
     if (this.total == 0) draw_snake(this.x, this.y, this.x, this.y, headDirection, tailDirection, 'red');
     else draw_snake(this.x, this.y, this.body[0].x, this.body[0].y, headDirection, tailDirection, 'red');
-    
+
     for (let i=0; i<this.body.length; i++) {
       ctx.fillRect(this.body[i].x,
         this.body[i].y, scale, scale);
     }
   }
 
+  // Updates frame of game
   this.update = function() {
     for (let i=0; i<this.body.length - 1; i++) {
       this.body[i] = this.body[i+1];
@@ -110,7 +118,7 @@ function Enemy() {
         with_enemy = false;
       }
     }
-    
+
     for (var i=0; i<player.body.length; i++) {
       if (this.x === player.body[i].x &&
         this.y === player.body[i].y) {
@@ -120,6 +128,7 @@ function Enemy() {
       }
     }
   }
+
   //Checks location vs apple and returns WASD
   this.findApple = function(appleX, appleY) {
   	if (appleY < this.y) return (this.ySpeed > 0 ? (apple.X > this.x ? 'D' : 'A') : 'W');

@@ -1,3 +1,9 @@
+/**
+  Team Members: Hunter Blachly, Calvin Nguyen
+  CPSC 254 -- Snake Game Project
+  Draw and Update Game Frames
+*/
+
 const canvas = document.querySelector(".canvas");
 const ctx = canvas.getContext("2d");
 const scale = 20;
@@ -36,6 +42,8 @@ with_enemy = true;
   }, 250);
 }());
 
+
+// Enemy Snake setup if setting is selected
 function updateEnemy() {
 	if (alone()) {
 		with_enemy = false;
@@ -46,7 +54,7 @@ function updateEnemy() {
     	enemy.update();
     	enemy.draw();
     	enemy.checkCollision(snake);
-    	
+
     	if (enemy.eat(food)) {
       		food.pickLocation();
     	}
