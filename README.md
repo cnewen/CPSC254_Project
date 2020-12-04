@@ -10,7 +10,7 @@ Race towards the food and avoid the bad ones. Collect as much as you can and ear
 * Hunter Blachly
 
 ### How To Run:
-1) Open start.html and press 'START'
+1) Open index.html and press 'START'
 2) Use 'WASD' for controls
 
 ### Options:
