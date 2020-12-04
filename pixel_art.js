@@ -1,5 +1,6 @@
 ////////////////Apple Pixel Art////////////////
 var multiplier = scale / 10.0;
+//Outline of apple at x1, y1
 function outline(x1, y1, ctx) {
 	ctx.fillStyle = 'black';
 	var outline = [[3, 5], [4, 5], [5, 5], [6, 5], [6, 4], [7, 3], 
@@ -14,18 +15,21 @@ function outline(x1, y1, ctx) {
 			[2, 6]];
 	fillPixels(outline, x1, y1, ctx);
 }
+//Main body of apple at x1, y1
 function body(x1, y1, fill, ctx) {
 	ctx.fillStyle = fill;
 	ctx.fillRect(x1 + 2 * multiplier, y1 + 6 * multiplier, 
 	11 * multiplier, 11 * multiplier);
 	ctx.fillRect(x1 + multiplier, y1 + 8 * multiplier, multiplier, 7 * multiplier);
 }
+//Leaf layer at x1, y1
 function leaf(x1, y1, ctx) {
 	ctx.fillStyle = 'green';
 	ctx.fillRect(x1 + 10 * multiplier, y1 + multiplier, 3 * multiplier, multiplier);
 	ctx.fillRect(x1 + 9 * multiplier, y1 + 2 * multiplier, 5 * multiplier, multiplier);
 	ctx.fillRect(x1 + 10 * multiplier, y1 + 3 * multiplier, 4 * multiplier, multiplier);
 }
+//Brown shade at x1, y1
 function shade(x1, y1, ctx) {
 	ctx.fillStyle = 'brown';
 	var brown = [[8, 3], [7, 4], [7, 5], [7, 6], [10, 6], [11, 6],
@@ -35,6 +39,7 @@ function shade(x1, y1, ctx) {
 			[3, 16]];
 	fillPixels(brown, x1, y1, ctx);
 }
+//White shine at x1, y1
 function shine(x1, y1, ctx) {
 	ctx.fillStyle = 'white';
 	var white = [[5, 8], [4, 8], [4, 9], [3, 9], [3, 10], [3, 11]];
@@ -53,6 +58,7 @@ function draw_apple(x1, y1, fill, ctx) {
 ////////////////In Game Snake Parts////////////////
 var radius = scale / 2;
 var up = false, down = false, left = false, right = false;
+//Draws a circle of given color at x, y
 function head(x, y, color) {
 	ctx.beginPath();
 	ctx.fillStyle = color;
@@ -62,7 +68,7 @@ function head(x, y, color) {
 	
 	ctx.fill();
 }
-
+//Draws eyes at x, y in the direction of the snake's head
 function eyes(x, y) {
 	var a = x + radius / 4, b = x + 3 * radius / 2, 
 	c = y + radius / 4, d = y + 3 * radius / 2;
@@ -73,7 +79,7 @@ function eyes(x, y) {
 	if (left || down) ctx.fillRect(a, d, radius / 3, radius / 3);
 	else ctx.fillRect(b, c, radius / 3, radius / 3);
 }
-
+//Draws tail at x, y in direction of last body part
 function tail(x, y, tailDir, color) {
 	ctx.beginPath();
 	ctx.fillStyle = color;
@@ -88,6 +94,7 @@ function tail(x, y, tailDir, color) {
 	
 	ctx.fill();
 }
+//Calls head, eyes, and tail function given two x, y pairs, directions, and color
 function draw_snake(x1, y1, x2, y2, headDir, tailDir, color) {
 	up = (headDir == 0);
 	down = (headDir == 1);
@@ -156,6 +163,7 @@ function start(canvas, x, y, size, href) {
 	});
 }
 ////////////////Start Screen Snake Pixel Art////////////////
+//Draws all layers of pixel snake
 function draw_pixel_snake(ctx, x, y, size) {
 	red_layer(ctx, x, y, size);
 	green_layer(ctx, x, y, size);
@@ -163,6 +171,7 @@ function draw_pixel_snake(ctx, x, y, size) {
 	outline_layer(ctx, x, y, size);
 	eyes_layer(ctx, x, y, size);
 }
+//Draws main body layer of snake at x, y
 function green_layer(ctx, x, y, size) {
 	ctx.fillStyle = 'green';
 	ctx.fillRect(x + 6 * size, y + 10 * size, 15 * size, 2 * size);
@@ -176,6 +185,7 @@ function green_layer(ctx, x, y, size) {
 	ctx.fillRect(x + 21 * size, y + 22 * size, 5 * size, 2 * size);
 	ctx.fillRect(x + 11 * size, y + 23 * size, 6 * size, size);
 }
+//Draws two layers at x, y for the stomach and forhead
 function stomach_layer(ctx, x, y, size) {
 	multiplier = size;
 	ctx.fillStyle = 'yellow';
@@ -196,6 +206,7 @@ function stomach_layer(ctx, x, y, size) {
 	layer = [[14, 21], [15, 20], [14, 23]];
 	fillPixels(layer, x, y, ctx);
 }
+//Draws tongue at x, y
 function red_layer(ctx, x, y, size) {
 	ctx.fillStyle = 'red';
 	ctx.fillRect(x + 2 * size, y + 19 * size, 2 * size, size);
@@ -206,6 +217,7 @@ function red_layer(ctx, x, y, size) {
 	ctx.fillRect(x + 6 * size, y + 14 * size, 4 * size, size);
 	ctx.fillRect(x + 7 * size, y + 13 * size, 4 * size, size);
 }
+//Draws outline of snake at x, y
 function outline_layer(ctx, x, y, size) {
 	ctx.fillStyle = 'black';
 	multiplier = size;
@@ -227,6 +239,7 @@ function outline_layer(ctx, x, y, size) {
 		[15,12], [16,12], [17,11]];
 	fillPixels(outline, x, y, ctx);
 }
+//Draws eyes of snake at x, y
 function eyes_layer(ctx, x, y, size) {
 	ctx.fillStyle = 'black';
 	multiplier = size;
@@ -254,7 +267,7 @@ function fillPixels(layer, x1, y1, ctx) {
 function radians(deg) {
 	return deg * Math.PI / 180;
 }
-//Draws a button on a canvas
+//Draws a button on a canvas at x, y
 function button(canvas, background, color, text, x, y, href) {
 	var ctx = canvas.getContext('2d');
 	var size = text.length;
